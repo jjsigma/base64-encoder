@@ -1,9 +1,7 @@
 package org.base64;
 
-import java.nio.charset.StandardCharsets;
-
-public class Encoder {
-    private static final char[] toBase64 = {
+public class Base64Tool {
+    private static final char[] alphabet = {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -11,12 +9,6 @@ public class Encoder {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'
     };
     private StringBuilder result;
-
-    public static void main(String[] args) {
-        Encoder encoder = new Encoder();
-        String text = "base64";
-        System.out.println("Encoding result: "+ encoder.encode(text.getBytes(StandardCharsets.UTF_8)));
-    }
 
     public String encode(byte[] data) {
         StringBuilder encodedResult = new StringBuilder((int) Math.ceil(data.length * 8.0 / 6.0));
@@ -35,10 +27,10 @@ public class Encoder {
                 var index = 0;
                 if(bitCount >= 6) {
                     index = (buffer >> (bitCount - 6)) & 0x3F;
-                    encodedResult.append(toBase64[index]);
+                    encodedResult.append(alphabet[index]);
                 } else {
                     index = (buffer & (0x3f >> (6 - bitCount))) << (6 - bitCount);
-                    encodedResult.append(toBase64[index]);
+                    encodedResult.append(alphabet[index]);
 
                     int bits = (byteCount * 8) + (6 - bitCount);
                     while(bits != 24) {
@@ -58,7 +50,6 @@ public class Encoder {
      * @return encoded string
      */
     public String stupidEncode(byte[] data) {
-        printData(data);
         StringBuilder decimalStr = new StringBuilder();
         for(byte b : data) {
             decimalStr.append(String.format("%8s", Integer.toBinaryString(b)).replaceAll("\\s", "0"));
@@ -80,7 +71,7 @@ public class Encoder {
             else {
                 index = Integer.parseInt((decimalStr.substring(i, i+6)), 2);
             }
-            resultStr.append(toBase64[index]);
+            resultStr.append(alphabet[index]);
         }
         System.out.println(resultStr);
 
@@ -89,12 +80,5 @@ public class Encoder {
         }
 
         return resultStr.toString();
-    }
-
-    private void printData(byte[] data) {
-        for(byte b : data) {
-            System.out.print(b+" ");
-        }
-        System.out.print("\n");
     }
 }
