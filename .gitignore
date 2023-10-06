@@ -1,11 +1,10 @@
 # Default ignored files
 /shelf/
 /.idea/workspace.xml
-target/
-!**/src/main/**/target/
-!**/src/test/**/target/
+/target/
+
 ### IntelliJ IDEA ###
-.idea
+/.idea/
 
 ### VS Code ###
 .vscode/
